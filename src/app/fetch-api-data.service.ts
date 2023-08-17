@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 
 
 //Declaring the api url that will provide data for client app
-const apiUrl = 'https://desolate-sierra-27780.herokuapp.com/';
+const apiUrl = 'https://desolate-sierra-27780.herokuapp.com';
 @Injectable({
   providedIn: 'root'
 })
@@ -26,6 +26,7 @@ export class FetchApiDataService {
  
 //api call for user login endpoint
   public userLogin(userDetails: any): Observable<any> {
+    console.log(userDetails)
     return this.http.post(apiUrl + 'login', userDetails).pipe(
       catchError(this.handleError)
     );
@@ -171,15 +172,32 @@ private extractResponseData(res: any): any {
   return body || {};
 }
 
+// private handleError(error: HttpErrorResponse): any {
+//     if (error.error instanceof ErrorEvent) {
+//     console.error('Some error occurred:', error.error.message);
+//     } else {
+//     console.error(
+//         `Error Status code ${error.status}, ` +
+//         `Error body is: ${error.error}`);
+//     }
+//     return throwError(
+//     'Something is not right! Please try again later.');
+//   }
+// }
+
 private handleError(error: HttpErrorResponse): any {
-    if (error.error instanceof ErrorEvent) {
+  if (error.error instanceof ErrorEvent) {
     console.error('Some error occurred:', error.error.message);
-    } else {
-    console.error(
-        `Error Status code ${error.status}, ` +
-        `Error body is: ${error.error}`);
-    }
-    return throwError(
-    'Something is not right! Please try again later.');
   }
+  else if (error.error.errors) {
+    return throwError(() => new Error(error.error.errors[0].msg));
+  }
+  else {
+    console.error(
+      `Error Status code ${error.status}, ` +
+      `Error body is: ${error.error}`);
+  }
+  return throwError(() => new Error('Something is not right! Please try again later.'));
 }
+}
+
