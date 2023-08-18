@@ -26,20 +26,39 @@ ngOnInit(): void {
 }
 
 //sends the form inputs to the backend
+// registerUser(): void {
+//     this.fetchApiData.userRegistration(this.userData).subscribe((response) => {
+//   // Logic for a successful user registration goes here! (To be implemented)
+//       this.dialogRef.close(); //closes the modal on success
+//       console.log(response);
+//       this.snackBar.open('User registration has been succesful!', 'OK', {
+//         duration: 2000
+//      });
+//     }, (response) => {
+//       console.log(response)
+//       this.snackBar.open(response, 'OK', {
+//         duration: 2000
+//       });
+//     });
+//   }
 registerUser(): void {
-    this.fetchApiData.userRegistration(this.userData).subscribe((response) => {
-  // Logic for a successful user registration goes here! (To be implemented)
+  this.fetchApiData.userRegistration(this.userData).subscribe({
+    next: (response) => {
+      // Logic for a successful user registration goes here! (To be implemented)
+      this.dialogRef.close(); // closes the modal on success
       console.log(response);
-      this.dialogRef.close(); //closes the modal on success
-      this.snackBar.open('User registeration has been succesful!', 'OK', {
-        duration: 2000
-     });
-    }, (response) => {
-      console.log(response)
-      this.snackBar.open(response, 'OK', {
-        duration: 2000
+      this.snackBar.open('User registration has been successful!', 'OK', {
+        duration: 2000,
       });
-    });
-  }
+    },
+    error: (response) => {
+      console.log(response);
+      this.snackBar.open(response, 'OK', {
+        duration: 2000,
+      });
+    },
+  });
+}
+
 
   }
