@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-// import { catchError } from 'rxjs/internal/operators';
 import { catchError, map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
@@ -89,7 +88,8 @@ getGenre(genreName: string): Observable<any> {
 }
 
 //api call for user endpoint
-getUser(username: any): Observable<any> {
+getUser(): Observable<any> {
+  const username = localStorage.getItem('Username')
   const token = localStorage.getItem('token');
   return this.http.get(apiUrl + 'users' + username, {
     headers: new HttpHeaders({
@@ -102,9 +102,10 @@ getUser(username: any): Observable<any> {
 }
 
 //api call for fav movie list endpoint
-getFavoriteMovies(Username: any): Observable<any> {
+getFavoriteMovies(): Observable<any> {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
   const token = localStorage.getItem('token');
-  return this.http.get(apiUrl + 'user' + Username, {
+  return this.http.get(apiUrl + 'user' + user.Username, {
     headers: new HttpHeaders({
       Authorization: 'Bearer ' + token,
     })
@@ -115,9 +116,11 @@ getFavoriteMovies(Username: any): Observable<any> {
 }
 
 //api call for adding fav movie to list endpoint
-addFavoriteMovie(Username: string, movies: any, MovieID: number): Observable<any> {
+addFavoriteMovie(MovieID: string): Observable<any> {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
   const token = localStorage.getItem('token');
-  return this.http.post(apiUrl + 'users/' + Username + movies + MovieID, {
+  user.FavoriteMovies.push(MovieID);
+  return this.http.post(apiUrl + 'users/' + user.Username + /movies/ + MovieID, {}, {
     headers: new HttpHeaders({
       Authorization: 'Bearer ' + token,
     })
@@ -125,6 +128,11 @@ addFavoriteMovie(Username: string, movies: any, MovieID: number): Observable<any
     map(this.extractResponseData),
     catchError(this.handleError)
   );
+}
+
+isFavoriteMovie(MovieID: string): boolean {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  return user.FavoriteMovies.indexOf(MovieID) >= 0;
 }
 
 //api call for editing user endpoint
@@ -141,9 +149,10 @@ editUser(Username: any): Observable<any> {
 }
 
 //api call for deleting movie endpoint
-deleteUser(Username: any): Observable<any> {
+deleteUser(): Observable<any> {
+  const username = localStorage.getItem('Username')
   const token = localStorage.getItem('token');
-  return this.http.delete(apiUrl + 'users/' + Username, {
+  return this.http.delete(apiUrl + 'users/' + username, {
     headers: new HttpHeaders({
       Authorization: 'Bearer ' + token,
     })
@@ -154,9 +163,16 @@ deleteUser(Username: any): Observable<any> {
 }
 
 //api call for deleting fav from list endpoint
-deleteFavoriteMovie(Username: any, MovieID: number): Observable<any> {
+deleteFavoriteMovie(MovieID: string): Observable<any> {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
   const token = localStorage.getItem('token');
-  return this.http.delete(apiUrl + 'users/' + Username + '/movies/' + MovieID, {
+
+  const index = user.FavoriteMovies.indexOf(MovieID);
+  if (index > -1) {
+    user.FavoriteMovies.splice(index, 1);
+  }
+  localStorage.setItem('user', JSON.stringify(user));
+  return this.http.delete(apiUrl + 'users/' + user.Username + '/movies/' + MovieID, {
     headers: new HttpHeaders({
       Authorization: 'Bearer ' + token,
     })
@@ -171,19 +187,6 @@ private extractResponseData(res: any): any {
   const body = res;
   return body || {};
 }
-
-// private handleError(error: HttpErrorResponse): any {
-//     if (error.error instanceof ErrorEvent) {
-//     console.error('Some error occurred:', error.error.message);
-//     } else {
-//     console.error(
-//         `Error Status code ${error.status}, ` +
-//         `Error body is: ${error.error}`);
-//     }
-//     return throwError(
-//     'Something is not right! Please try again later.');
-//   }
-// }
 
 private handleError(error: HttpErrorResponse): any {
   if (error.error instanceof ErrorEvent) {
