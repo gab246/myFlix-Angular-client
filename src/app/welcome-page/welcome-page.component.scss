@@ -1,0 +1,30 @@
+.main-page {
+  padding: 2rem;
+  text-align: center;
+  background-color: #f7f7f7;
+  height: 100%;
+  
+  & .main-page-container {
+    background-color: rgba(143, 195, 246, 0.5);
+    border-radius: 6px;
+    border: 3px solid rgb(201, 211, 247);
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 640px;
+    padding: 2rem;
+  }
+
+  & button {
+    margin-top: 2rem;
+    width: 150px;
+    color: #ce8383;
+    font-size: 15px;
+  }
+
+ 
+
+}
+
+
+
+  
