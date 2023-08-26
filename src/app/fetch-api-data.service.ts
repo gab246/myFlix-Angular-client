@@ -4,7 +4,6 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable, throwError } from 'rxjs';
 
 
-
 //Declaring the api url that will provide data for client app
 const apiUrl = 'https://desolate-sierra-27780.herokuapp.com/';
 @Injectable({
@@ -136,9 +135,10 @@ isFavoriteMovie(MovieID: string): boolean {
 }
 
 //api call for editing user endpoint
-editUser(Username: any): Observable<any> {
+editUser(updatedUser: any): Observable<any> {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
   const token = localStorage.getItem('token');
-  return this.http.put(apiUrl + 'users/' + Username, {
+  return this.http.put(apiUrl + 'users/' + user.Username, updatedUser, {
     headers: new HttpHeaders({
       Authorization: 'Bearer ' + token,
     })
@@ -148,11 +148,11 @@ editUser(Username: any): Observable<any> {
   );
 }
 
-//api call for deleting movie endpoint
+// api call for deleting movie endpoint
 deleteUser(): Observable<any> {
-  const username = localStorage.getItem('Username')
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
   const token = localStorage.getItem('token');
-  return this.http.delete(apiUrl + 'users/' + username, {
+  return this.http.delete(apiUrl + 'users/' + user.Username,  {
     headers: new HttpHeaders({
       Authorization: 'Bearer ' + token,
     })
@@ -161,6 +161,7 @@ deleteUser(): Observable<any> {
     catchError(this.handleError)
   );
 }
+
 
 //api call for deleting fav from list endpoint
 deleteFavoriteMovie(MovieID: string): Observable<any> {
@@ -188,19 +189,16 @@ private extractResponseData(res: any): any {
   return body || {};
 }
 
+
 private handleError(error: HttpErrorResponse): any {
   if (error.error instanceof ErrorEvent) {
-    console.error('Some error occurred:', error.error.message);
-  }
-  else if (error.error.errors) {
-    return throwError(() => new Error(error.error.errors[0].msg));
-  }
-  else {
-    console.error(
-      `Error Status code ${error.status}, ` +
+  console.error('Some error occurred:', error.error.message);
+  } else {
+  console.error(
+      `Error Status code ${error.status}, ` + 
       `Error body is: ${error.error}`);
   }
-  return throwError(() => new Error('Something is not right! Please try again later.'));
+  return throwError(
+  'Something bad happened; please try again later.');
 }
 }
-
