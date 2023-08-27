@@ -18,7 +18,7 @@ export class UserProfileComponent implements OnInit {
 
   constructor(
     public fetchApiData: FetchApiDataService,
-    public dialogRef: MatDialogRef<UserProfileComponent>,
+    // public dialogRef: MatDialogRef<UserProfileComponent>,
     public snackBar: MatSnackBar,
     private router: Router
   ) { }
@@ -34,11 +34,13 @@ export class UserProfileComponent implements OnInit {
     this.userData.Email = this.user.Email;
     this.userData.Birthday = this.user.Birthday;
 
-    this.fetchApiData.getAllMovies().subscribe((resp: any) => {
-      this.favoriteMovies = resp.filter((m: { _id: any; }) => this.user.FavoriteMovies.indexOf(m._id) >= 0)
-    })
+    this.fetchApiData.getAllMovies().subscribe((response: any) => {
+      this.favoriteMovies = response.filter((m: { _id: any }) => this.user.FavoriteMovies.indexOf(m._id) >= 0)
+
+   })
+    
   })
-  }
+}
 
   editUser(): void {
     this.fetchApiData.editUser(this.userData).subscribe((result) => {
@@ -55,17 +57,19 @@ export class UserProfileComponent implements OnInit {
   }
 
   deleteUser(): void {
+    if (confirm("Are you sure you want to delete this account?")){
+      this.router.navigate(['welcome']).then(() => {
+        this.snackBar.open(
+          "You have successfully deleted your account", "OK",
+          {
+            duration: 2000,
+          }
+        );
+    });
     this.fetchApiData.deleteUser().subscribe((result) => {
       localStorage.clear();
-      this.router.navigate(['welcome']);
-      this.snackBar.open('User has been successfully deleted', 'OK', {
-        duration: 2000
-      });
-    }, (result) => {
-      this.snackBar.open(result, 'OK', {
-        duration: 2000
-      });
-    })
+    });
+      }
+    }
   }
 
-}
