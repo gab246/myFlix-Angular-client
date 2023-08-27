@@ -28,18 +28,11 @@ export class UserProfileComponent implements OnInit {
   }
 
   getUser(): void {
-    this.fetchApiData.getUser().subscribe((response: any) => {
-    this.user = response;
+    this.user = Response;
     this.userData.Username = this.user.Username;
     this.userData.Email = this.user.Email;
     this.userData.Birthday = this.user.Birthday;
 
-    this.fetchApiData.getAllMovies().subscribe((response: any) => {
-      this.favoriteMovies = response.filter((m: { _id: any }) => this.user.FavoriteMovies.indexOf(m._id) >= 0)
-
-   })
-    
-  })
 }
 
   editUser(): void {
@@ -65,9 +58,6 @@ export class UserProfileComponent implements OnInit {
             duration: 2000,
           }
         );
-    });
-    this.fetchApiData.deleteUser().subscribe((result) => {
-      localStorage.clear();
     });
       }
     }
