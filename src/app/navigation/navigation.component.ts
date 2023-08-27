@@ -17,7 +17,7 @@ export class NavigationComponent {
   }
 
   toMovies(): void {
-    this.router.navigate(['movies'])
+    this.router.navigate(['Movies'])
   }
 
   toProfile(): void {
