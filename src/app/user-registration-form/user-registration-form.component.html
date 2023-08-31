@@ -8,9 +8,10 @@
         <input
           matInput
           [(ngModel)]="userData.Username"
-          placeholder="Username"
+          placeholder="Username (min length 6)"
           type="text"
           name="Username"
+          minlength="6"
           required
         >
         </mat-form-field>
@@ -19,8 +20,9 @@
           matInput
           [(ngModel)]="userData.Password"
           type = "password"
-          placeholder="Password"
+          placeholder="Password (min length 6)"
           name="Password"
+          minlength="6"
           required
         >
       </mat-form-field>
