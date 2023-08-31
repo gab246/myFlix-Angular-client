@@ -1,4 +1,4 @@
-# Mooves by MyFlix - Angular 
+# Moovies by MyFlix - Angular 
 
 Moovies is a web application that allows users to discover information about movies, including genre, director, an image and movie details. Users are able to sign up, log into their account, edit their user information, delete their account and personalise their movie preferences. It is the client side to the movie api that I previously created. 
 
