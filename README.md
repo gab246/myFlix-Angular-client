@@ -1,3 +1,23 @@
+# Moovies by MyFlix - Angular 
+
+Moovies is a web application that allows users to discover information about movies, including genre, director, an image and movie details. Users are able to sign up, log into their account, edit their user information, delete their account and personalise their movie preferences. It is the client side to the movie api that I previously created. 
+
+# Key Features
+A Welcome View, where users can sign up or login 
+User Profile View, where users can edit their profile (including delete their profile)
+Movie View, showing all the movies 
+Movie Component Card, where users can open a dialogue with details about genre, director, movie description
+Angular Router to enable change between Profile, Movie and Welcome view
+
+
+# Technologies Used
+Angular
+Angular CLI
+Angular Material
+Typescript
+Hosted on GitHub pages
+
+
 # MyFlixAngularClient
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
