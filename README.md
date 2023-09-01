@@ -2,7 +2,7 @@
 
 Moovies is a web application that allows users to discover information about movies, including genre, director, an image and movie details. Users are able to sign up, log into their account, edit their user information, delete their account and personalise their movie preferences. It is the client side to the movie api that I previously created. 
 
-<img src=images/login.png width=300> <img src=images/movies.png width=300>
+<img src=images/login.png width=1200> <img src=images/movies.png width=1200>
 
 # Key Features
 A Welcome View, where users can sign up or login 
