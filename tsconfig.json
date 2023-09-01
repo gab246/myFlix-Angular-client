@@ -24,6 +24,10 @@
       "dom"
     ]
   },
+  "typedocOptions": {
+    "entryPoints": ["src/app/fetch-api-data.service.ts"],
+    "out": "docs"
+  },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
